@@ -11,7 +11,6 @@ ENV NO_GAMEPAD="True" \
     TITLE="Beeper" \
     RESTART_APP="True" \
     SELKIES_UI_TITLE="Beeper" \
-    SELKIES_DEBUG="True" \
     SELKIES_UI_SHOW_LOGO="False" \
     SELKIES_UI_SIDEBAR_SHOW_GAMING_MODE="False"
     
