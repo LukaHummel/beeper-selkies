@@ -8,7 +8,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     rm -rf /var/lib/apt/lists/*
 # Environment Variables
 ENV NO_GAMEPAD="True"
-    RESTART_APP="True"
     SELKIES_UI_TITLE="Beeper"
 # Download Beeper AppImage
 RUN curl -L -o /usr/local/bin/beeper.AppImage https://api.beeper.com/desktop/download/linux/x64/stable/com.automattic.beeper.desktop && \
