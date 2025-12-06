@@ -1,1 +1,1 @@
-/usr/local/bin/beeper/AppRun --no-sandbox
+/usr/local/bin/beeper.AppImage --appimage-extract-and-run --no-sandbox
