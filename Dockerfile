@@ -10,7 +10,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 ENV NO_GAMEPAD="True" \
     TITLE="Beeper" \
     RESTART_APP="True" \
-    SELKIES_UI_TITLE="Beeper"
+    SELKIES_UI_TITLE="Beeper" \
+    SELKIES_DEBUG="True" \
+    SELKIES_UI_SHOW_LOGO="False" \
+    SELKIES_UI_SIDEBAR_SHOW_GAMING_MODE="False"
+    
 # Download Beeper AppImage
 RUN curl -L -o /usr/local/bin/beeper.AppImage https://api.beeper.com/desktop/download/linux/x64/stable/com.automattic.beeper.desktop && \
     chmod +x /usr/local/bin/beeper.AppImage
