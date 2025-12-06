@@ -27,8 +27,8 @@ RUN mkdir -p ~/.config ~/.local/share && \
     ln -sf /config/beeper/share ~/.local/share/beeper
 # Create launcher (SINGLE LINE - NO HEREDOC ISSUES)
 RUN echo '#!/bin/sh\nexport APPIMAGE_EXTRACT_AND_RUN=1\ncd /usr/local/bin\nexec ./beeper.AppImage --no-sandbox' > /usr/local/bin/beeper-launch && \
-    chmod +x /usr/local/bin/beeper-launch \
-    ln -sf /usr/local/bin/beeper-launch /usr/bin/beeper-launch \
+    chmod +x /usr/local/bin/beeper-launch && \
+    ln -sf /usr/local/bin/beeper-launch /usr/bin/beeper-launch && \
     echo 'export PATH="/usr/local/bin:$PATH"' >> /etc/environment
 
 COPY /root /
