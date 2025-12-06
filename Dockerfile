@@ -13,9 +13,6 @@ ENV NO_GAMEPAD="True" \
     SELKIES_UI_TITLE="Beeper" \
     SELKIES_UI_SHOW_LOGO="False" \
     SELKIES_UI_SIDEBAR_SHOW_GAMING_MODE="False"
-
-# Ensure Openbox PATH finds beeper-launch
-RUN echo 'export PATH="/usr/local/bin:$PATH"' >> /etc/environment
     
 # Download Beeper AppImage
 RUN curl -L -o /usr/local/bin/beeper.AppImage https://api.beeper.com/desktop/download/linux/x64/stable/com.automattic.beeper.desktop && \
@@ -30,9 +27,8 @@ RUN mkdir -p ~/.config ~/.local/share && \
     ln -sf /config/beeper/share ~/.local/share/beeper
 # Create launcher (SINGLE LINE - NO HEREDOC ISSUES)
 RUN echo '#!/bin/sh\nexport APPIMAGE_EXTRACT_AND_RUN=1\ncd /usr/local/bin\nexec ./beeper.AppImage --no-sandbox' > /usr/local/bin/beeper-launch && \
-    chmod +x /usr/local/bin/beeper-launch
-# Cron: Launch Beeper 10s after boot
-RUN echo "@reboot sleep 10 && /usr/local/bin/beeper-launch" > /etc/cron.d/beeper && \
-    chmod 0644 /etc/cron.d/beeper
+    chmod +x /usr/local/bin/beeper-launch \
+    ln -sf /usr/local/bin/beeper-launch /usr/bin/beeper-launch \
+    echo 'export PATH="/usr/local/bin:$PATH"' >> /etc/environment
 
 COPY /root /
