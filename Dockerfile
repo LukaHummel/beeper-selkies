@@ -25,14 +25,8 @@ USER root
 RUN mkdir -p ~/.config ~/.local/share && \
     ln -sf /config/beeper/config ~/.config/beeper && \
     ln -sf /config/beeper/share ~/.local/share/beeper
-# Create reliable launcher script (multi-line)
-RUN cat > /usr/local/bin/beeper-launch << 'EOF' && \
-    chmod +x /usr/local/bin/beeper-launch \
-EOF
-#!/bin/sh
-export APPIMAGE_EXTRACT_AND_RUN=1
-cd /usr/local/bin
-exec ./beeper.AppImage --no-sandbox
-EOF
+# Create launcher (SINGLE LINE - NO HEREDOC ISSUES)
+RUN echo '#!/bin/sh\nexport APPIMAGE_EXTRACT_AND_RUN=1\ncd /usr/local/bin\nexec ./beeper.AppImage --no-sandbox' > /usr/local/bin/beeper-launch && \
+    chmod +x /usr/local/bin/beeper-launch
 
 COPY /root /
