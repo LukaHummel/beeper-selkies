@@ -2,8 +2,14 @@
 <openbox_menu xmlns="http://openbox.org/3.4/menu">
 <menu id="root-menu" label="MENU">
   <item label="Beeper">
-    <action name="Execute"><command>/usr/local/bin/beeper.AppImage --appimage-extract-and-run --no-sandbox</command></action>
+    <action name="Execute">
+      <command>/usr/local/bin/beeper-launch</command>
+    </action>
   </item>
-  <item label="xterm" icon="/usr/share/pixmaps/xterm-color_48x48.xpm"><action name="Execute"><command>/usr/bin/xterm</command></action></item>
+  <item label="Terminal">
+    <action name="Execute">
+      <command>xterm</command>
+    </action>
+  </item>
 </menu>
 </openbox_menu>
