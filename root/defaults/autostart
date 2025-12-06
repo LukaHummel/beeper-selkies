@@ -1,1 +1,6 @@
-/usr/local/bin/beeper.AppImage --appimage-extract-and-run --no-sandbox
+#!/bin/sh
+sleep 3
+while ! pgrep -x "selkies-gstreamer" > /dev/null; do
+    sleep 1
+done
+/usr/local/bin/beeper.AppImage --appimage-extract-and-run --no-sandbox &
