@@ -3,7 +3,7 @@
   <menu id="root-menu" label="MENU">
     <item label="Beeper">
       <action name="Execute">
-        <command>/usr/local/bin/beeper.AppImage</command>
+        <command>/usr/local/bin/beeper.AppImage --appimage-extract-and-run --no-sandbox</command>
       </action>
     </item>
   </menu>
