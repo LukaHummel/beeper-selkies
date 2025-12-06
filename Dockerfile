@@ -31,4 +31,4 @@ RUN echo '#!/bin/sh\nexport APPIMAGE_EXTRACT_AND_RUN=1\ncd /usr/local/bin\nexec 
     ln -sf /usr/local/bin/beeper-launch /usr/bin/beeper-launch && \
     echo 'export PATH="/usr/local/bin:$PATH"' >> /etc/environment
 
-COPY /root /
+COPY root/ /root/
