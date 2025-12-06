@@ -8,7 +8,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     rm -rf /var/lib/apt/lists/*
 # Environment Variables
 ENV NO_GAMEPAD="True"
-    TITLE="Beeper"
     RESTART_APP="True"
     SELKIES_UI_TITLE="Beeper"
 # Download Beeper AppImage
