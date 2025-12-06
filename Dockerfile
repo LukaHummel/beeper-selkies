@@ -31,5 +31,8 @@ RUN mkdir -p ~/.config ~/.local/share && \
 # Create launcher (SINGLE LINE - NO HEREDOC ISSUES)
 RUN echo '#!/bin/sh\nexport APPIMAGE_EXTRACT_AND_RUN=1\ncd /usr/local/bin\nexec ./beeper.AppImage --no-sandbox' > /usr/local/bin/beeper-launch && \
     chmod +x /usr/local/bin/beeper-launch
+# Cron: Launch Beeper 10s after boot
+RUN echo "@reboot sleep 10 && /usr/local/bin/beeper-launch" > /etc/cron.d/beeper && \
+    chmod 0644 /etc/cron.d/beeper
 
 COPY /root /
