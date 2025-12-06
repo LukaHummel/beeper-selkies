@@ -13,6 +13,9 @@ ENV NO_GAMEPAD="True" \
     SELKIES_UI_TITLE="Beeper" \
     SELKIES_UI_SHOW_LOGO="False" \
     SELKIES_UI_SIDEBAR_SHOW_GAMING_MODE="False"
+
+# Ensure Openbox PATH finds beeper-launch
+RUN echo 'export PATH="/usr/local/bin:$PATH"' >> /etc/environment
     
 # Download Beeper AppImage
 RUN curl -L -o /usr/local/bin/beeper.AppImage https://api.beeper.com/desktop/download/linux/x64/stable/com.automattic.beeper.desktop && \
