@@ -13,7 +13,7 @@ RUN wget -O /tmp/beeper.AppImage https://api.beeper.com/desktop/download/linux/x
     chmod +x /tmp/beeper.AppImage && \
     /tmp/beeper.AppImage --appimage-extract && \
     mkdir /usr/local/bin/beeper/ && \
-    mv squashfs-root/* /usr/local/bin/beeper/ && \
+    mv squashfs-root /usr/local/bin/beeper/ && \
     rm -rf /tmp/beeper.AppImage squashfs-root && \
     chmod +x /usr/local/bin/beeper/AppRun
 
