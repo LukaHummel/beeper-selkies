@@ -16,7 +16,7 @@ RUN mkdir -p /config/beeper/config /config/beeper/share && \
     chown -R 1000:1000 /config  # Matches default PUID/PGID
 
 # Symlink Beeper data to persistent storage
-USER abc  # Default Selkies user
+USER root
 RUN mkdir -p ~/.config ~/.local/share && \
     mv ~/.config/beeper /config/beeper/config 2>/dev/null || true && \
     mv ~/.local/share/beeper /config/beeper/share 2>/dev/null || true && \
