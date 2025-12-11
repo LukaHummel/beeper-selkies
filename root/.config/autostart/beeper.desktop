@@ -1,6 +1,8 @@
 [Desktop Entry]
+Version=1.0
 Type=Application
 Name=Beeper
+Comment=Beeper Desktop messaging application
 Exec=/usr/local/bin/beeper-launch
 Hidden=false
 NoDisplay=false
