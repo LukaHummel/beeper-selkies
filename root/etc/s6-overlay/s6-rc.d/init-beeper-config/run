@@ -1,11 +1,14 @@
 #!/usr/bin/with-contenv bash
 
 # Create Beeper config directories if they don't exist
-mkdir -p /config/.config/BeeperTexts
-mkdir -p /config/.pki/nssdb
+mkdir -p /config/.config/BeeperTexts \
+         /config/.config/beeper \
+         /config/.local/share/beeper \
+         /config/.pki/nssdb
 
 # Fix ownership for abc user (PUID/PGID from environment, defaults to 1000)
-chown -R abc:abc /config/.config
-chown -R abc:abc /config/.pki
+chown -R abc:abc /config/.config \
+                 /config/.local \
+                 /config/.pki
 
 echo "[init-beeper-config] Beeper config directories initialized with correct permissions"
