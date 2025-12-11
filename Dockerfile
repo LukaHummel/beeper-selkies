@@ -40,3 +40,4 @@ RUN printf '%s\n' \
 RUN printf '%s\n' 'export PATH="/usr/local/bin:$PATH"' > /etc/profile.d/custom-path.sh
 
 COPY root/ /
+RUN chmod +x /defaults/autostart
