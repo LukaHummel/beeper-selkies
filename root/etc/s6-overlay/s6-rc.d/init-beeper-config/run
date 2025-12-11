@@ -1,12 +1,19 @@
 #!/usr/bin/with-contenv bash
 
+# Ensure /config directory exists (should be mounted as volume)
+if [ ! -d "/config" ]; then
+    echo "[init-beeper-config] ERROR: /config directory does not exist. Please mount a volume to /config"
+    exit 1
+fi
+
 # Create Beeper config directories if they don't exist
 mkdir -p /config/.config/BeeperTexts \
          /config/.config/beeper \
          /config/.local/share/beeper \
          /config/.pki/nssdb
 
-# Fix ownership for abc user (PUID/PGID from environment, defaults to 1000)
+# Fix ownership for abc user
+# Note: The base image's s6-overlay handles PUID/PGID mapping to the abc user automatically
 chown -R abc:abc /config/.config \
                  /config/.local \
                  /config/.pki
