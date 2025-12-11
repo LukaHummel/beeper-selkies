@@ -24,7 +24,10 @@ RUN mkdir -p /config/.config/BeeperTexts \
              /config/.config/beeper \
              /config/.local/share/beeper \
              /config/.pki/nssdb && \
-    chown -R 1000:1000 /config
+    chown -R 1000:1000 /config/.config/BeeperTexts \
+                       /config/.config/beeper \
+                       /config/.local/share/beeper \
+                       /config/.pki
 # Create launcher (SINGLE LINE - NO HEREDOC ISSUES)
 RUN printf '%s\n' \
     '#!/bin/sh' \
