@@ -40,6 +40,24 @@ jobs:
       - name: Checkout repository
         uses:  actions/checkout@v4
 
+      - name: Download Docker image from test workflow
+        if: github.event_name == 'workflow_run'
+        uses: actions/download-artifact@v4
+        with:
+          name: beeper-selkies-image
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Load Docker image
+        if: github.event_name == 'workflow_run'
+        run: |
+          if [ -f beeper-selkies-image.tar.gz ]; then
+            gunzip -c beeper-selkies-image.tar.gz | docker load
+            echo "IMAGE_LOADED=true" >> $GITHUB_ENV
+          else
+            echo "IMAGE_LOADED=false" >> $GITHUB_ENV
+          fi
+
       # Install the cosign tool except on PR
       # https://github.com/sigstore/cosign-installer
       - name: Install cosign
@@ -75,6 +93,7 @@ jobs:
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
       - name: Build and push Docker image
+        if: env.IMAGE_LOADED != 'true'
         id: build-and-push
         uses: docker/build-push-action@0565240e2d4ab88bba5387d719585280857ece09 # v5.0.0
         with:
@@ -84,6 +103,20 @@ jobs:
           labels: ${{ steps.meta. outputs.labels }}
           cache-from:  type=gha
           cache-to:  type=gha,mode=max
+
+      # Tag and push the loaded Docker image (when using artifact from test workflow)
+      - name: Tag and push loaded Docker image
+        if: env.IMAGE_LOADED == 'true'
+        id: tag-and-push
+        run: |
+          TAGS="${{ steps.meta.outputs.tags }}"
+          for tag in $TAGS; do
+            docker tag beeper-selkies-test:latest "$tag"
+            docker push "$tag"
+          done
+          # Get the digest of the pushed image for signing
+          DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' $(echo "$TAGS" | head -n1) | cut -d'@' -f2)
+          echo "digest=$DIGEST" >> $GITHUB_OUTPUT
 
       # Sign the resulting Docker image digest except on PRs. 
       # This will only write to the public Rekor transparency log when the Docker
@@ -95,7 +128,7 @@ jobs:
         env:
           # https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions#using-an-intermediate-environment-variable
           TAGS: ${{ steps. meta.outputs.tags }}
-          DIGEST: ${{ steps. build-and-push.outputs.digest }}
+          DIGEST: ${{ steps.build-and-push.outputs.digest || steps.tag-and-push.outputs.digest }}
         # This step uses the identity token to provision an ephemeral certificate
         # against the sigstore community Fulcio instance. 
         run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
