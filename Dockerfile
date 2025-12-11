@@ -19,13 +19,15 @@ ENV NO_GAMEPAD="True" \
 RUN curl -L -o /usr/local/bin/beeper.AppImage https://api.beeper.com/desktop/download/linux/x64/stable/com.automattic.beeper.desktop && \
     chmod +x /usr/local/bin/beeper.AppImage
 
-# Persist config
-RUN mkdir -p /config/beeper/{config,share} && chown -R 1000:1000 /config
-
-USER root
-RUN mkdir -p ~/.config ~/.local/share && \
-    ln -sf /config/beeper/config ~/.config/beeper && \
-    ln -sf /config/beeper/share ~/.local/share/beeper
+# Create Beeper config directories with correct permissions for abc user (UID 1000)
+RUN mkdir -p /config/.config/BeeperTexts \
+             /config/.config/beeper \
+             /config/.local/share/beeper \
+             /config/.pki/nssdb && \
+    chown -R 1000:1000 /config/.config/BeeperTexts \
+                       /config/.config/beeper \
+                       /config/.local/share/beeper \
+                       /config/.pki/nssdb
 # Create launcher (SINGLE LINE - NO HEREDOC ISSUES)
 RUN printf '%s\n' \
     '#!/bin/sh' \
