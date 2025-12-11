@@ -154,6 +154,6 @@ When making changes:
 ## Additional Resources
 
 - [LinuxServer.io Selkies Base Images](https://github.com/linuxserver/docker-baseimage-selkies)
-- [Selkies Documentation](https://docs.linuxserver.io/images/docker-baseimage-selkies/)
+- [Selkies Documentation](https://selkies-project.github.io/selkies/)
 - [Beeper Desktop](https://www.beeper.com/)
 - [XFCE Desktop Environment](https://www.xfce.org/)
