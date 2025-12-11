@@ -7,7 +7,7 @@ This repository packages the Beeper Desktop messaging application as a Docker co
 ## Architecture
 
 - **Base Image**: `ghcr.io/linuxserver/baseimage-selkies:debianbookworm` - Provides Selkies web streaming infrastructure
-- **Desktop Environment**: XFCE4 - Full desktop environment with proper XDG autostart support
+- **Desktop Environment**: Openbox - Lightweight window manager optimized for Selkies
 - **Application**: Beeper Desktop AppImage - Installed at `/usr/local/bin/beeper.AppImage`
 - **Launch Script**: `/usr/local/bin/beeper-launch` - Wrapper script with required environment variables and flags
 
@@ -20,14 +20,9 @@ This repository packages the Beeper Desktop messaging application as a Docker co
 │   └── workflows/
 │       └── docker-publish.yml          # CI/CD workflow for building and publishing container
 ├── root/                               # Files copied to container root (/)
-│   ├── defaults/
-│   │   ├── autostart                   # Primary application to launch
-│   │   ├── menu.xml                    # Openbox right-click menu definition
-│   │   └── startwm.sh                  # Desktop environment startup script (XFCE4)
-│   └── etc/
-│       └── xdg/
-│           └── autostart/
-│               └── beeper.desktop      # XDG autostart entry for system-wide autostart
+│   └── defaults/
+│       ├── autostart                   # Primary application to launch
+│       └── menu.xml                    # Openbox right-click menu definition
 └── README.md                           # Documentation and configuration options
 ```
 
@@ -44,11 +39,10 @@ This repository packages the Beeper Desktop messaging application as a Docker co
 
 ### Desktop Environment
 
-1. **XFCE4 Required**: This project uses XFCE4 instead of Openbox for full XDG autostart support
+1. **Openbox Window Manager**: This project uses the default Openbox window manager that comes with the Selkies base image for optimal performance
 2. **Autostart Mechanism**: 
    - Primary application defined in `root/defaults/autostart`
-   - System-wide XDG autostart via `root/etc/xdg/autostart/beeper.desktop`
-   - Desktop environment started via `root/defaults/startwm.sh` using `startxfce4`
+   - Selkies launches the application automatically via the `/defaults/autostart` mechanism
 3. **Application Restart**: `RESTART_APP="True"` environment variable enables automatic application restart watchdog
 
 ### Selkies Configuration
@@ -66,9 +60,7 @@ This repository packages the Beeper Desktop messaging application as a Docker co
 - **Launch Script**: `/usr/local/bin/beeper-launch` (also symlinked to `/usr/bin/beeper-launch`)
 - **Configuration**: `/config/beeper/config` (mounted volume)
 - **Data**: `/config/beeper/share` (mounted volume)
-- **Autostart Files**: 
-  - `/root/defaults/autostart` - Primary launch command
-  - `/etc/xdg/autostart/beeper.desktop` - XDG autostart entry
+- **Autostart File**: `/defaults/autostart` - Primary launch command
 
 ## Build and Test Process
 
@@ -97,7 +89,6 @@ Access the web interface at https://localhost:3001
 
 ### System Packages (Debian)
 
-- `xfce4` and `xfce4-terminal` - Desktop environment
 - GTK and graphics libraries for Beeper AppImage:
   - `libgtk-3-0`, `libxss1`, `libasound2`, `libnss3`, `libgconf-2-4`
   - `libappindicator3-1`, `libdbusmenu-glib4`, `libdbusmenu-gtk3-4`
@@ -120,10 +111,6 @@ Edit `root/defaults/autostart` to change the primary application launch command.
 ### Updating Desktop Menu
 
 Modify `root/defaults/menu.xml` to add or change right-click menu items (XML format, Openbox syntax).
-
-### Changing Desktop Environment Startup
-
-Edit `root/defaults/startwm.sh` to modify how the desktop environment starts. Currently uses XFCE4.
 
 ## Security Considerations
 

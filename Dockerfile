@@ -2,7 +2,6 @@ FROM ghcr.io/linuxserver/baseimage-selkies:debianbookworm
 
 # Install minimal deps (no FUSE needed)
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    xfce4 xfce4-terminal \
     libgtk-3-0 libxss1 libasound2 libnss3 libgconf-2-4 \
     libappindicator3-1 libdbusmenu-glib4 libdbusmenu-gtk3-4 \
     libgbm1 libxshmfence1 libdrm2 libsecret-1-0 libatspi2.0-0 && \
