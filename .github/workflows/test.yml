@@ -12,30 +12,48 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
       - name: Build Docker image
-        run: docker build -t beeper-selkies-test .
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          load: true
+          tags: beeper-selkies-test:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
-      - name: Test autostart file is executable
+      - name: Run all tests
         run: |
-          docker run --rm beeper-selkies-test test -x /defaults/autostart
-
-      - name: Test beeper-launch script exists and is executable
-        run: |
-          docker run --rm beeper-selkies-test test -x /usr/local/bin/beeper-launch
-
-      - name: Test Beeper AppImage exists and is executable
-        run: |
-          docker run --rm beeper-selkies-test test -x /usr/local/bin/beeper.AppImage
-
-      - name: Test s6-overlay init script exists
-        run: |
-          docker run --rm beeper-selkies-test test -f /etc/s6-overlay/s6-rc.d/init-beeper-config/run
-
-      - name: Test config directories can be created with correct permissions
-        run: |
-          docker run --rm beeper-selkies-test bash -c "
+          docker run --rm beeper-selkies-test:latest bash -c "
+            set -e
+            echo '✓ Testing autostart file is executable...'
+            test -x /defaults/autostart
+            
+            echo '✓ Testing beeper-launch script exists and is executable...'
+            test -x /usr/local/bin/beeper-launch
+            
+            echo '✓ Testing Beeper AppImage exists and is executable...'
+            test -x /usr/local/bin/beeper.AppImage
+            
+            echo '✓ Testing s6-overlay init script exists...'
+            test -f /etc/s6-overlay/s6-rc.d/init-beeper-config/run
+            
+            echo '✓ Testing config directories can be created with correct permissions...'
             mkdir -p /config/.config/BeeperTexts &&
             chown -R abc:abc /config/.config &&
             su abc -c 'touch /config/.config/BeeperTexts/test-file' &&
-            echo 'Permissions test passed!'
+            echo '✓ All tests passed!'
           "
+
+      - name: Export Docker image
+        run: |
+          docker save beeper-selkies-test:latest | gzip > beeper-selkies-image.tar.gz
+
+      - name: Upload Docker image as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: beeper-selkies-image
+          path: beeper-selkies-image.tar.gz
+          retention-days: 1
