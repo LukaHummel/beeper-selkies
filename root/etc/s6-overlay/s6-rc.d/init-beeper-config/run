@@ -25,3 +25,4 @@ if ! chown -R abc:abc /config/.config \
 fi
 
 echo "[init-beeper-config] Beeper config directories initialized with correct permissions"
+exit 0
